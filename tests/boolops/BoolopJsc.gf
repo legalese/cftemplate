@@ -3,9 +3,10 @@ concrete BoolopJsc of Boolop = open Prelude in {
     Exp = { s : Str ; b : Bool };
     CFtest, CFout = Str;
   lin
-    And x y = { s = paren (x.s ++ " and " ++ y.s) ; b = andB x.b y.b } ;
-    Or  x y = { s = paren (x.s ++ " or "  ++ y.s) ; b =  orB x.b y.b } ;
-    Not   x = { s = paren (       "not "  ++ x.s) ; b = notB x.b     } ;
+    And x y = { s = x.s ++ " and " ++ y.s ; b = andB x.b y.b } ;
+    Or  x y = { s = x.s ++ " or "  ++ y.s ; b =  orB x.b y.b } ;
+    Not   x = { s =        "not "  ++ x.s ; b = notB x.b     } ;
+    P     x = x ** { s = paren x.s } ;
     Alpha   = { s = "top" ; b = True  } ;
     Beta    = { s = "bot" ; b = False } ;
 

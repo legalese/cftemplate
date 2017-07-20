@@ -12,7 +12,7 @@ abstract Boolop = {
   cat Exp; CFtest; CFout;
   fun
     And, Or     : Exp -> Exp -> Exp;
-    Not         : Exp -> Exp;
+    Not, P      : Exp -> Exp;
     Alpha, Beta : Exp;
     CFt         : Exp -> CFtest;
     CFo         : Exp -> CFout;
