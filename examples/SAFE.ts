@@ -1,12 +1,17 @@
 
 export = function(inputJSON: Common) {
-
-    let [ControlJSON, guessedSpecies] = guessSpecies(inputJSON);
-    // console.error("guessed controlJSON: " + JSON.stringify(ControlJSON));
-    // console.error("guessed species: " + Species[guessedSpecies]);
-    let [validationError, validation_rv] = validate(guessedSpecies, ControlJSON, inputJSON);
+    // standard linter doesn't like the js that tsc produces from this:
+    // let [ControlJSON, guessedSpecies] = guessSpecies(inputJSON);    
+    // let [validationError, validationRv] = validate(guessedSpecies, ControlJSON, inputJSON);
+    // so doing it the verbose way:
+    let temp1 = guessSpecies(inputJSON);
+    let ControlJSON = temp1[0];
+    let guessedSpecies = temp1[1];
+    let temp2 = validate(guessedSpecies, ControlJSON, inputJSON); // should be either a Cap, Discount, CapDiscount, or MFN -- can typescript do that?    
+    let validationError = temp2[0];
+    let validationRv = temp2[1];        
     if (validationError) {
-        throw ("VALIDATION ERROR: " + validation_rv);
+        throw Error("VALIDATION ERROR: " + validationRv);
     }
     else {
         return myAssign(ControlJSON, inputJSON);
@@ -42,7 +47,7 @@ interface ControlJSON {
 enum Species { Cap, Discount, CapDiscount, MFN }
 
 function nonzero(input: string): boolean {
-    return Number(input.replace(/[^\d\.]/g, "")) > 0;
+    return Number(input.replace(/[^\d.]/g, "")) > 0;
 }
 
 function myAssign<O1, O2>(obj1: O1, obj2: O2): O1 | O2 {
@@ -65,8 +70,8 @@ function guessSpecies(userJSON: Common): [ControlJSON, Species] {
         MFN: false
     };
 
-    let discount_rate = userJSON["Discount Rate"];
-    if (discount_rate && nonzero(discount_rate)) controlJSON.Discount = true;
+    let discountRate = userJSON["Discount Rate"];
+    if (discountRate && nonzero(discountRate)) controlJSON.Discount = true;
     let cap = userJSON["Valuation Cap"];
     if (cap && nonzero(cap)) controlJSON.Cap = true;
 

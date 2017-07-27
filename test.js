@@ -45,7 +45,6 @@ glob('tests/*', function (error, results) {
 
 function squash (str) {
   return str
-    .replace(/  +/g, " ")
-    .replace(/ +$/gm,"");
+    .replace(/(?: {2})+/g, ' ')
+    .replace(/ +$/gm, '')
 }
-
